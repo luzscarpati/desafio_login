@@ -4,6 +4,7 @@ import { __dirname } from "./utils.js";
 import productRouter from './routes/product.router.js';
 import cartRouter from './routes/cart.router.js';
 import viewRouter from './routes/views.router.js';
+import { Server } from "socket.io";
 
 const app = express();
 
@@ -23,5 +24,9 @@ app.set('view engine', 'handlebars');
 app.use('/', viewRouter);
 
 const PORT = 8080;
+const httpServer = app.listen(PORT, () => console.log(`Server ok on port ${PORT}`));
+const socketServer = new Server(httpServer);
 
-app.listen(PORT, () => console.log(`Server ok on port ${PORT}`));
+ socketServer.on('connection', (socket)=>{
+    console.log(`Se conecto un usuario${socket.id}`);
+ });
