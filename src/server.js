@@ -27,6 +27,19 @@ const PORT = 8080;
 const httpServer = app.listen(PORT, () => console.log(`Server ok on port ${PORT}`));
 const socketServer = new Server(httpServer);
 
- socketServer.on('connection', (socket)=>{
-    console.log(`Se conecto un usuario${socket.id}`);
- });
+const products = [];
+
+socketServer.on('connection', (socket)=>{
+    console.log(`Usuario conectado ${socket.id}`);
+    socket.on('disconnect', ()=> console.log('usuario desconectado'))
+
+    socket.emit('saludoDesdeBack', 'Bienvenido a websocket')
+
+    socket.on('respuestaDesdeFront', (msg)=> console.log(msg))
+
+    socket.on('newProduct', (product)=>{
+        console.log("Producto recibido en el servidor:", product);
+        products.push(product)
+        socketServer.emit('arrayProducts', products)
+    })
+})
