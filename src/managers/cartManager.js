@@ -1,6 +1,6 @@
 import { error } from "console";
 import fs from "fs";
-import { ProductManager } from "./productManager.js";
+import ProductManager from "../managers/product.manager.js";
 
 export class CartManager {
     constructor(path) {
