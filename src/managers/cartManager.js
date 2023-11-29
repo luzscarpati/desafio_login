@@ -1,20 +1,18 @@
 import { error } from "console";
 import fs from "fs";
 import ProductManager from "../managers/product.manager.js";
+import { CartModel } from "../models/cart.model.js";
 
 export class CartManager {
-    constructor(path) {
-        this.path = path;
-    }
+    //constructor(path) {
+    //    this.path = path;
+    //}
 
-    async getCarts() {
+    async getCarts(page=1, limit=10) {
         try {
-            if (fs.existsSync(this.path)) {
-                const cartsJSON = await fs.promises.readFile(this.path, "utf-8");
-                return JSON.parse(cartsJSON);
-            } else {
-                return [];
-            }
+            return (
+                await CartModel.paginate({}, { page, limit, sort: {price: sortOrder} })
+            );
         } catch (error) {
             console.log('Error al obtener carritos', error);
         }

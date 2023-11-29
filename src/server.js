@@ -28,7 +28,7 @@ const PORT = 8080;
 const httpServer = app.listen(PORT, () => console.log(`Server ok on port ${PORT}`));
 const socketServer = new Server(httpServer);
 
-const products = [];
+//const products = [];
 
 socketServer.on('connection', (socket)=>{
     console.log(`Usuario conectado ${socket.id}`);

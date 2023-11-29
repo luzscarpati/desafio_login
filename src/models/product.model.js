@@ -7,12 +7,9 @@ export const productSchema = new Schema({
     description: { type: String, require: true },
     price: { type: Number, require: true },
     stock: { type: Number, require: true },
+    category: { type: String, require: true }
 });
 
 productSchema.plugin(mongoosePaginate);
-
-export const ProductModel = model(
-    productCollection, 
-    productSchema
-);
+export const ProductModel = model(productCollection, productSchema);
 

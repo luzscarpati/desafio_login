@@ -6,7 +6,7 @@ export const getAllProducts = async (req, res, next) => {
     try {
         const { page, limit, sort } = req.query;
         const products = await productManager.getAll(page, limit, sort);
-        // products.nextLink = "http://luz.scarpati";
+        //products.nextLink = "http://luz.scarpati";
         res.json(products);
     } catch (error) {
         next(error);
