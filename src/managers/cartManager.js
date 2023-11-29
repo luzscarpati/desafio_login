@@ -15,37 +15,33 @@ export class CartManager {
             );
         } catch (error) {
             console.log('Error al obtener carritos', error);
-        }
-    }
+        };
+    };
 
-    async createCart() {
+    async createCart(obj) {
         try {
-            const cartsFile = await this.getCarts();
-            const maxCartId = Math.max(...cartsFile.map(cart => cart.id));
-            const newCartId = maxCartId + 1;
-            const cart = {
-                id: newCartId,
-                products: [],
-            };
-            cartsFile.push(cart);
-            await fs.promises.writeFile(this.path, JSON.stringify(cartsFile));
-            return cart;
+            return await CartModel.create(obj);
         } catch (error) {
             console.log(error);
-        }
-    }
+        };
+    };
 
     async getCartById(id) {
         try {
-            id = parseInt(id);
-            const carts = await this.getCarts();
-            const cart = carts.find((c) => c.id === id);
-            return cart || null;
+           await CartModel.findById(id);
         } catch (error) {
             console.log(error);
             return null;
-        }
-    }
+        };
+    };
+
+    async deleteCart(id){
+        try{
+            await CartModel.findByIdAndDelete(id);
+        } catch (error){
+            return error;
+        };
+    };
 
     async getCartIdInJson(id){
         try{
@@ -57,6 +53,8 @@ export class CartManager {
             return error;
         }
     }
+
+   
 
     async saveProductToCart(idCart, idProd) {
         idProd = parseInt(idProd);

@@ -7,8 +7,19 @@ export const cartSchema = new Schema({
     type: String,
     required: true,
     index: true,
-  }
+  },
+  products:[
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'products',
+      default: []
+    }
+  ]
 });
 
 cartSchema.plugin(mongoosePaginate);
+cartSchema.pre('find', function(){
+    this.populate('products')
+})
+
 export const CartModel = model(cartsColletion, cartSchema);
