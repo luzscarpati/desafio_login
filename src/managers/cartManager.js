@@ -1,18 +1,14 @@
 import { error } from "console";
-import fs from "fs";
 import ProductManager from "../managers/product.manager.js";
 import { CartModel } from "../models/cart.model.js";
+import { ProductModel } from "../models/product.model.js";
 
 export class CartManager {
-    //constructor(path) {
-    //    this.path = path;
-    //}
-
-    async getCarts(page=1, limit=10) {
+   
+    async getAll(page=1, limit=10) {
         try {
-            return (
-                await CartModel.paginate({}, { page, limit, sort: {price: sortOrder} })
-            );
+            const response = await CartModel.find();
+            return response;
         } catch (error) {
             console.log('Error al obtener carritos', error);
         };
@@ -52,36 +48,53 @@ export class CartManager {
         } catch (error){
             return error;
         }
-    }
+    };
 
-   
 
-    async saveProductToCart(idCart, idProd) {
-        idProd = parseInt(idProd);
-        const carts = await this.getCarts();
-        const cartId = await this.getCartIdInJson(idCart);
-        const productManager = new ProductManager('./src/data/products.json');
-        const products = await productManager.getProductById(idProd);
-        console.log('a ver: ', cartId, products);
-
-        if (cartId && products) {
-            const cartProduct = carts[cartId].products.find((p) => p.product === idProd);
-
-            if (cartProduct) {
-                cartProduct.quantity += 1;
-            } else {
-                const prod = {
-                    product: idProd,
-                    quantity: 1
-                };
-
-                carts[cartId].products.push(prod);
+    async saveProductToCart(idCart, arrProducts) {
+        try {
+            let cart = await CartModel.findById(idCart);
+            if (arrProducts.products) {
+                arrProducts.products.forEach(idProduct => {
+                    cart.products.push(idProduct);
+                });
             }
+            cart.save();
+            cart = await CartModel.findById(idCart).populate("products");
+            return cart;
 
-            await fs.promises.writeFile(this.path, JSON.stringify(carts));
-            return carts[cartId];
-        } else {
-            return false
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    async deleteProductFromCart(cartId, productId) {
+        try {
+            let cart = await CartModel.findById(cartId);
+            for (let i = 0; i < cart.products.length; i++){
+                const element = cart.products[i];
+                if (element._id.valueOf() == productId){
+                    cart.products.splice(i, 1);
+                    cart.save();
+                    return true;
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    async updCartProductsAmount (cartId, productId, body) {
+        try{
+            let cart = await CartModel.findById(cartId);
+            for (let i = 0; i < body.quantity; i++){
+                await cart.products.push(productId);
+                await cart.save();
+            }
+            return cart;
+        }catch(error){
+            console.log(error);
         }
     }
+
 }

@@ -1,7 +1,7 @@
 import {Schema, model} from "mongoose";
-import mongoosePaginate from 'mongoose-paginate-v2';
+import mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2';
 
-export const cartsColletion = 'carts';
+
 export const cartSchema = new Schema({
   name: {
     type: String,
@@ -17,9 +17,9 @@ export const cartSchema = new Schema({
   ]
 });
 
-cartSchema.plugin(mongoosePaginate);
+cartSchema.plugin(mongooseAggregatePaginate);
 cartSchema.pre('find', function(){
     this.populate('products')
 })
 
-export const CartModel = model(cartsColletion, cartSchema);
+export const CartModel = model('carts', cartSchema);

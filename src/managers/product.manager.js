@@ -6,10 +6,29 @@ export default class ProductManager {
     //    this.collection = model(collection, schema);
     //};
 
-    async getAll(page=1, limit=10, sortOrder='desc') {
+    async getAll(page=1, limit=10, sortOrder='desc', query=null) {
         try{
+            let queryObject = query ? JSON.parse(query) : {};
+            
+            let filter = {};
+            for (const [key, value] of Object.entries(queryObject)) {
+                if (key === 'category'){
+                    filter.category = value;
+                } else if (key === 'disponibility'){
+                    filter.stock = value ? {$gt: 0} : {$lt: 1};
+                }
+            }
+            
+            let myAggregate = ProductModel.aggregate([{ $match: filter}]);
+            const options = {
+                page: page,
+                limit: limit,
+                sort: {price: sortOrder},
+            };
+
             return (
-                await ProductModel.paginate({}, { page, limit, sort: {price: sortOrder} })
+                await ProductModel
+                .aggregatePaginate(myAggregate, options)
             );
         } catch (error) {
             console.log(error);

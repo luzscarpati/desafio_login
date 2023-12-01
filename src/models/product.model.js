@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
-import mongoosePaginate from 'mongoose-paginate-v2';
+import mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2';
 
-export const productCollection = 'product';
+export const productCollection = 'products';
 export const productSchema = new Schema({
     name: { type: String, require: true },
     description: { type: String, require: true },
@@ -10,6 +10,6 @@ export const productSchema = new Schema({
     category: { type: String, require: true }
 });
 
-productSchema.plugin(mongoosePaginate);
+productSchema.plugin(mongooseAggregatePaginate);
 export const ProductModel = model(productCollection, productSchema);
 

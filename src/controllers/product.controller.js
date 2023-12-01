@@ -1,12 +1,26 @@
 import ProductManager from '../managers/product.manager.js';
 
 const productManager = new ProductManager();
+const urlBase = 'http://localhost:8080/api/products/';
 
 export const getAllProducts = async (req, res, next) => {
     try {
-        const { page, limit, sort } = req.query;
-        const products = await productManager.getAll(page, limit, sort);
-        //products.nextLink = "http://luz.scarpati";
+        const { page, limit, sort, query } = req.query;
+        
+        const products = await productManager.getAll(page, limit, sort, query);
+        
+        let srtOptions = '';
+        if(limit){
+            srtOptions += '&limit=' + limit;
+        };
+        if(sort) {
+            srtOptions += '&sort=' + sort;
+        };
+        
+
+        products.prevLink = products.hasPrevPage ? urlBase + '?page=' + products.prevPage + srtOptions : null;
+        products.nextLink = products.hasNextPage ? urlBase + '?page=' + products.nextPage + srtOptions : null;
+       
         res.json(products);
     } catch (error) {
         next(error);
