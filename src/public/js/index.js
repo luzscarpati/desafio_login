@@ -33,7 +33,7 @@ socketClient.on('arrayProducts', (productsArray) => {
     productsArray.forEach(p => {
         infoProducts += `${p.title} - $${p.price} </br>`
     });
-    inputProducts.innerHTML = infoProducts; // Actualiza el contenido en tu página
+    inputProducts.innerHTML = infoProducts; 
 });
 
 
