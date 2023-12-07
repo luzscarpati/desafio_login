@@ -1,7 +1,6 @@
-// import { model } from "mongoose";
 import { ProductModel } from "../models/product.model.js";
 
-export default class ProductManager {
+export default class ProductServices {
     //constructor( collection, schema) {
     //    this.collection = model(collection, schema);
     //};

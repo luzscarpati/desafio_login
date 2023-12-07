@@ -8,8 +8,8 @@ import viewRouter from './routes/views.router.js';
 import './db/connection.js';
 import { MONGOATLAS } from "./db/connection.js";
 import handlebars from "express-handlebars";
-// import productRouter from './routes/product.router.js';
-// import cartRouter from './routes/cart.router.js';
+import productRouter from './routes/product.router.js';
+import cartRouter from './routes/cart.router.js';
 
 const app = express();
 
@@ -40,8 +40,11 @@ app.set('views', __dirname + '/views');
 
 app.use(session(mongoStoreOptions));
 
-app.use('/users', userRouter);
+
 app.use('/views', viewRouter);
+app.use('/users', userRouter);
+app.use('products', productRouter);
+app.use('cart', cartRouter);
 
 const PORT = 8080;
 app.listen(PORT, () => console.log(`Server ok on port ${PORT}`));

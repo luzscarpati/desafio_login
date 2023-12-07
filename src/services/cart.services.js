@@ -1,9 +1,6 @@
-import { error } from "console";
-import ProductManager from "../managers/product.manager.js";
 import { CartModel } from "../models/cart.model.js";
-import { ProductModel } from "../models/product.model.js";
 
-export class CartManager {
+export default class CartServices {
    
     async getAll(page=1, limit=10) {
         try {
@@ -47,7 +44,7 @@ export class CartManager {
             return cartId || null;
         } catch (error){
             return error;
-        }
+        };
     };
 
 
@@ -65,7 +62,7 @@ export class CartManager {
 
         } catch (error) {
             console.log(error);
-        }
+        };
     };
 
     async deleteProductFromCart(cartId, productId) {
@@ -77,11 +74,11 @@ export class CartManager {
                     cart.products.splice(i, 1);
                     cart.save();
                     return true;
-                }
-            }
+                };
+            };
         } catch (error) {
             console.log(error);
-        }
+        };
     };
 
     async updCartProductsAmount (cartId, productId, body) {
@@ -94,7 +91,6 @@ export class CartManager {
             return cart;
         }catch(error){
             console.log(error);
-        }
-    }
-
-}
+        };
+    };
+};
