@@ -1,25 +1,28 @@
 import { Router } from "express";
-import ProductManager from "../managers/product.manager.js";
 
 const router = Router();
-const productManager = new ProductManager('./src/data/products.json')
 
-
-router.get('/', async (req, res)=>{
-    try {
-        const products = await productManager.getProducts();
-        res.render('home', {products});
-    }catch (error) {
-        res.status(500).json({error: 'No se pudo obtener la lista de productos'});
+router.get('/', (req, res)=>{
+    res.render('login');
+});
+router.get('/register', (req, res)=>{
+    res.render('register');
+});
+router.get('/profile', (req, res)=>{
+    const user = req.session.user;
+//REVEER
+    if (user) {
+        const { first_name } = user;
+        res.render('profile', { user, first_name });
+    } else {
+        res.redirect('/views/errorLogin');
     }
 });
-
-router.get('/realtimeproducts', async (req, res) => {
-    try {
-        res.render('realTimeProducts');
-    } catch (error) {
-        res.status(500).json({ error: 'No se pudo obtener la lista de productos' });
-    }
+router.get('/errorRegister', (req, res)=>{
+    res.render('errorRegister')
+});
+router.get('/errorLogin', (req, res)=>{
+    res.render('errorLogin')
 });
 
 
