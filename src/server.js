@@ -43,8 +43,8 @@ app.use(session(mongoStoreOptions));
 
 app.use('/views', viewRouter);
 app.use('/users', userRouter);
-app.use('products', productRouter);
-app.use('cart', cartRouter);
+app.use('/products', productRouter);
+app.use('/cart', cartRouter);
 
 const PORT = 8080;
 app.listen(PORT, () => console.log(`Server ok on port ${PORT}`));

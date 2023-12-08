@@ -3,6 +3,16 @@ import UserServices from "../services/user.services.js";
 const userService = new UserServices();
 
 export default class UserController {
+  async getUsers(req, res, next) {
+    try {
+      const users = await userService.getUsers();
+      const usersPlain = users.map(user => user.toObject());
+      return res.render('users', { users: usersPlain });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   async register (req, res, next) {
     console.log(req.body);
     try{

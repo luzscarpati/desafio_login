@@ -1,6 +1,17 @@
 import { UserModel } from "../models/user.model.js";
 
 export default class UserServices {
+
+    async getUsers(){
+        try{
+            const users = await UserModel.find();
+            return users;
+            console.log('GETUSERS: ', users)
+        }catch(error){
+            next(error)
+        }
+    };
+
     async findByEmail(email){
         return await UserModel.findOne({email});
     };
