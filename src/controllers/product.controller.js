@@ -1,4 +1,3 @@
-// product.controller.js
 import ProductServices from "../services/product.services.js";
 
 const productServices = new ProductServices();
@@ -6,30 +5,13 @@ const productServices = new ProductServices();
 export default class ProductController {
   async getAllProducts(req, res, next) {
     try {
-      const { page, limit, sort, query } = req.query;
-
-      const products = await productServices.getAll(page, limit, sort, query);
-
-      let srtOptions = "";
-      if (limit) {
-        srtOptions += "&limit=" + limit;
-      }
-      if (sort) {
-        srtOptions += "&sort=" + sort;
-      }
-
-      products.prevLink = products.hasPrevPage
-        ? "?page=" + products.prevPage + srtOptions
-        : null;
-      products.nextLink = products.hasNextPage
-        ? "?page=" + products.nextPage + srtOptions
-        : null;
-
-      res.render('products', { products });
+      const products = await productServices.getProducts();
+      const productsPlain = products.map(product => product.toObject());
+      return res.render('products', { products: productsPlain });
     } catch (error) {
       next(error);
-    }
-  }
+    };
+  };
 
   async getProductById(req, res, next) {
     try {

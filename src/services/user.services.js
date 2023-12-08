@@ -6,7 +6,6 @@ export default class UserServices {
         try{
             const users = await UserModel.find();
             return users;
-            console.log('GETUSERS: ', users)
         }catch(error){
             next(error)
         }

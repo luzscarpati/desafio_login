@@ -1,31 +1,13 @@
-// product.services.js
 import { ProductModel } from "../models/product.model.js";
 
 export default class ProductServices {
-  async getAll(page = 1, limit = 10, sortOrder = "desc", query = null) {
-    try {
-      let queryObject = query ? JSON.parse(query) : {};
-
-      let filter = {};
-      for (const [key, value] of Object.entries(queryObject)) {
-        if (key === "category") {
-          filter.category = value;
-        } else if (key === "disponibility") {
-          filter.stock = value ? { $gt: 0 } : { $lt: 1 };
-        }
-      };
-
-      let myAggregate = ProductModel.aggregate([{ $match: filter }]);
-      const options = {
-        page: page,
-        limit: limit,
-        sort: { price: sortOrder },
-      };
-
-      return await ProductModel.aggregatePaginate(myAggregate, options);
-    } catch (error) {
-      console.log(error);
-    }
+  async getProducts() {
+    try{
+      const products = await ProductModel.find();
+      return products;
+  }catch(error){
+      next(error)
+  }
   };
 
   async getById(id) {
