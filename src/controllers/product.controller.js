@@ -25,7 +25,7 @@ export default class ProductController {
         ? "?page=" + products.nextPage + srtOptions
         : null;
 
-      res.render('products', { products }); // Reemplaza 'products' con el nombre de tu vista Handlebars
+      res.render('products', { products });
     } catch (error) {
       next(error);
     }
@@ -37,9 +37,8 @@ export default class ProductController {
       const product = await productServices.getById(id);
 
       if (!product) {
-        res.render('productNotFound'); // Reemplaza 'productNotFound' con el nombre de tu vista Handlebars para producto no encontrado
-      } else {
-        res.render('productDetail', { product }); // Reemplaza 'productDetail' con el nombre de tu vista Handlebars para detalles del producto
+        res.render('productNotFound');
+        res.render('productDetail', { productDetail }); 
       }
     } catch (error) {
       next(error);
@@ -51,9 +50,9 @@ export default class ProductController {
       const newProduct = await productServices.create(req.body);
 
       if (!newProduct) {
-        res.render('errorCreatingProduct'); // Reemplaza 'errorCreatingProduct' con el nombre de tu vista Handlebars para error al crear el producto
+        res.render('errorCreatingProduct'); // Crear 'errorCreatingProduct'  vista Handlebars para error al crear el producto
       } else {
-        res.render('productCreated', { newProduct }); // Reemplaza 'productCreated' con el nombre de tu vista Handlebars para producto creado con éxito
+        res.render('productCreated', { newProduct }); // Crear 'productCreated' vista Handlebars para producto creado con éxito
       }
     } catch (error) {
       next(error);
