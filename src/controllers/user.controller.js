@@ -38,4 +38,18 @@ export default class UserController {
       next(error)
     };
   };
+
+  async getByEmail(email){
+    try{
+      const userExist = await userService.findByEmail({email}); 
+      if(userExist) return userExist
+      else return false
+
+    }catch(error){
+      console.log(error);
+      throw new Error(error);
+    };
+  };
+
+
 };

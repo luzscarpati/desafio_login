@@ -10,6 +10,8 @@ import { MONGOATLAS } from "./db/connection.js";
 import handlebars from "express-handlebars";
 import productRouter from './routes/product.router.js';
 import cartRouter from './routes/cart.router.js';
+import passport from "passport";
+import "./passport/github-strategy.js"
 
 const app = express();
 
@@ -32,13 +34,17 @@ const mongoStoreOptions = {
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(session(mongoStoreOptions));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Configuración de handlebars
 app.engine('handlebars', handlebars.engine());
 app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 
-app.use(session(mongoStoreOptions));
+
 
 
 app.use('/views', viewRouter);

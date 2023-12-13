@@ -12,7 +12,13 @@ export default class UserServices {
     };
 
     async findByEmail(email){
-        return await UserModel.findOne({email});
+        try{
+          const userExist = await UserModel.findOne(email);
+          if(userExist) return userExist;
+          else return false;  
+        }catch(error){
+            console.log(error);
+        };
     };
 
     async register(user) {
