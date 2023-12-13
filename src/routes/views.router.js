@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+
 const router = Router();
 
 router.get('/', (req, res)=>{
@@ -10,6 +11,7 @@ router.get('/register', (req, res)=>{
 });
 router.get('/profile', (req, res)=>{
     const user = req.session.user;
+     
     if (user) {
         const { first_name } = user;
         res.render('profile', { user, first_name });
